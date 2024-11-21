@@ -1,10 +1,11 @@
 {
   "name": "jitbit-js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Javascript Wrapper for the Jitbit REST API",
   "main": "JitBit.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "docs": "node generateDocumentation.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/Dakine135/jitbit-js/issues"
   },
-  "homepage": "https://github.com/Dakine135/jitbit-js#readme"
+  "homepage": "https://github.com/Dakine135/jitbit-js#readme",
+  "devDependencies": {
+    "jsdoc-to-markdown": "^9.0.5"
+  }
 }
