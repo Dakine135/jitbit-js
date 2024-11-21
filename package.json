@@ -1,0 +1,29 @@
+{
+  "name": "jitbit-js",
+  "version": "0.0.1",
+  "description": "Javascript Wrapper for the Jitbit REST API",
+  "main": "JitBit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dakine135/jitbit-js.git"
+  },
+  "keywords": [
+    "jitbit",
+    "js",
+    "javascript",
+    "node",
+    "rest",
+    "api",
+    "http",
+    "request"
+  ],
+  "author": "Dustin Welborn",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/Dakine135/jitbit-js/issues"
+  },
+  "homepage": "https://github.com/Dakine135/jitbit-js#readme"
+}
