@@ -5,7 +5,8 @@
   "main": "JitBit.js",
   "scripts": {
     "test": "node test.js",
-    "docs": "node generateDocumentation.js"
+    "docs": "node generateDocumentation.js",
+    "publish": "npm publish --access public"
   },
   "repository": {
     "type": "git",
