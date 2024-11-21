@@ -1,3 +1,3 @@
 const JitBitClass = require('./lib/JitBitClass');
-const jitBit = JitBitClass({ isTest: true });
+const jitBit = new JitBitClass({ isTest: true });
 jitBit.getTickets({});
