@@ -9,6 +9,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: PublishToNPM
     permissions:
       contents: read
       id-token: write
@@ -31,3 +32,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
           NPM_AUTH_TOKEN: ${{ secrets.NPM_JITBITJS_TOKEN }} # You need to set this in your repo settings
           NODE_AUTH_TOKEN: ${{ secrets.NPM_JITBITJS_TOKEN }}
+          token: ${{ secrets.NPM_JITBITJS_TOKEN }}
