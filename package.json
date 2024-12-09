@@ -1,10 +1,11 @@
 {
   "name": "jitbit-js",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Javascript Wrapper for the Jitbit REST API",
   "main": "JitBit.js",
   "scripts": {
     "test": "node test.js",
+    "doc": "node generateDocumentation.js",
     "docs": "node generateDocumentation.js",
     "publish": "npm publish --access public"
   },

@@ -1,5 +1,6 @@
 # jitbit-js
   ZERO Dependencies Javascript Wrapper for the [Jitbit REST API](https://www.jitbit.com/docs/api/)
+  Built-in caching and exponential backoff retry logic.
   <a name="jitBit"></a>
 
 ## .jitBit
@@ -9,8 +10,9 @@
 * [.jitBit](#jitBit)
     * [new jitBit()](#new_jitBit_new)
     * _instance_
-        * [.getTickets(params)](#jitBit+getTickets) ⇒ <code>Array.&lt;Object&gt;</code>
-        * [.getTicket(params)](#jitBit+getTicket) ⇒ <code>Object</code>
+        * [.getTickets(params, ignoreCache)](#jitBit+getTickets) ⇒ <code>Array.&lt;Object&gt;</code>
+        * [.getTicket(params, ignoreCache)](#jitBit+getTicket) ⇒ <code>Object</code>
+        * [.deleteTicket(params)](#jitBit+deleteTicket)
         * [.getAttachment(params)](#jitBit+getAttachment) ⇒ <code>Buffer</code>
         * [.createTicket(params)](#jitBit+createTicket) ⇒ <code>int</code>
         * [.getUser(params)](#jitBit+getUser) ⇒ <code>Object</code>
@@ -19,6 +21,9 @@
     * _static_
         * [.jitBit](#jitBit.jitBit)
             * [new jitBit(params)](#new_jitBit.jitBit_new)
+        * [.ticketOrigins](#jitBit.ticketOrigins)
+        * [.ticketPriorities](#jitBit.ticketPriorities)
+        * [.ticketStatuses](#jitBit.ticketStatuses)
 
 <a name="new_jitBit_new"></a>
 
@@ -28,7 +33,7 @@ Class wrapper for jitbit rest api JITBIT Documentation
 
 <a name="jitBit+getTickets"></a>
 
-### jitBit.getTickets(params) ⇒ <code>Array.&lt;Object&gt;</code>
+### jitBit.getTickets(params, ignoreCache) ⇒ <code>Array.&lt;Object&gt;</code>
 Get Tickets
 
 **Kind**: instance method of [<code>jitBit</code>](#jitBit)  
@@ -56,6 +61,7 @@ Get Tickets
 | params.count | <code>int</code> |  | (optional) How many tickets to return. Default: 10. Max: 300. |
 | params.offset | <code>int</code> |  | (optional) Use this to create paging. For example "offset=20&count=20" will return the next 20 tickets after the first 20. Default: 0. |
 | params.fullDetails | <code>Boolean</code> |  | (optional) Will call "getTicket" for each record returned, so you'll get full ticket details instead of just a summary. This will slow down the API call significantly. |
+| ignoreCache | <code>Boolean</code> |  | Ignore Cache |
 
 **Example**  
 ```js
@@ -99,7 +105,7 @@ Get Tickets
 ```
 <a name="jitBit+getTicket"></a>
 
-### jitBit.getTicket(params) ⇒ <code>Object</code>
+### jitBit.getTicket(params, ignoreCache) ⇒ <code>Object</code>
 get details of one specific ticket by ID
 
 **Kind**: instance method of [<code>jitBit</code>](#jitBit)  
@@ -113,6 +119,7 @@ get details of one specific ticket by ID
 | params.issueId | <code>int</code> | (Alias) Ticket id |
 | params.IssueID | <code>int</code> | (Alias) Ticket id |
 | params.TicketID | <code>int</code> | (Alias) Ticket id |
+| ignoreCache | <code>Boolean</code> | Ignore Cache |
 
 **Example**  
 ```js
@@ -175,6 +182,23 @@ get details of one specific ticket by ID
         "Stats": null
       }
 ```
+<a name="jitBit+deleteTicket"></a>
+
+### jitBit.deleteTicket(params)
+delete ticket by ID
+
+**Kind**: instance method of [<code>jitBit</code>](#jitBit)  
+**Date**: December 09 2024 11:11 pm -0500  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> |  |
+| params.id | <code>int</code> | Ticket id |
+| params.ticketId | <code>int</code> | (Alias) Ticket id |
+| params.issueId | <code>int</code> | (Alias) Ticket id |
+| params.IssueID | <code>int</code> | (Alias) Ticket id |
+| params.TicketID | <code>int</code> | (Alias) Ticket id |
+
 <a name="jitBit+getAttachment"></a>
 
 ### jitBit.getAttachment(params) ⇒ <code>Buffer</code>
@@ -219,6 +243,7 @@ create a ticket
 | params.assignedToUserEmail | <code>int</code> | (optional) - User-Email to assign the ticket to (optional, requires technician permissions) |
 | params.customFields | <code>Object</code> | (optional) - An object that contains custom field values for the ticket. Format { "ID1" : "value", "ID2" : "value" } where "ID" is the custom field's ID-number. |
 | params.suppressConfirmation | <code>bool</code> | (optional) - Skip sending user confirmation email (useful when creating a ticket on behalf) |
+| params.dryRun | <code>bool</code> | (optional) - looks up user and checks params, but does not create a ticket (no ticket id returned) |
 
 <a name="jitBit+getUser"></a>
 
@@ -335,4 +360,29 @@ Creates an instance of jitBit.
 | params.username | <code>String</code> | username for authentication (optional if token is provided) |
 | params.password | <code>String</code> | password for authentication (optional if token is provided) |
 | params.token | <code>String</code> | token for authentication (optional if username/password is provided) (You can get your token by visiting /User/Token/ page in the helpdesk app) |
+| params.isTest | <code>Boolean</code> | disables network calls |
+| params.cacheTimeToLive | <code>Number</code> | how long to cache results for in milliseconds (default 30,000) |
+| params.cacheIntervalRate | <code>Number</code> | how often to check cache expiration in milliseconds (default 2000) |
+| params.disableCaching | <code>Boolean</code> | Disabled Caching |
 
+<a name="jitBit.ticketOrigins"></a>
+
+### jitBit.ticketOrigins
+Id/Value associated with Origin when creating a ticket
+
+**Kind**: static property of [<code>jitBit</code>](#jitBit)  
+**Date**: December 09 2024 14:12 pm -0500  
+<a name="jitBit.ticketPriorities"></a>
+
+### jitBit.ticketPriorities
+Ticket Priority Levels and their ids
+
+**Kind**: static property of [<code>jitBit</code>](#jitBit)  
+**Date**: December 09 2024 14:12 pm -0500  
+<a name="jitBit.ticketStatuses"></a>
+
+### jitBit.ticketStatuses
+jitbit built-in ticket Statuses and their ids (look at url for id of custom Status types)
+
+**Kind**: static property of [<code>jitBit</code>](#jitBit)  
+**Date**: December 09 2024 14:12 pm -0500  

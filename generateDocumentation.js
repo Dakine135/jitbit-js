@@ -4,6 +4,7 @@ const jsdoc2md = require('jsdoc-to-markdown');
 (async () => {
   const staticReadmeTop = `# jitbit-js
   ZERO Dependencies Javascript Wrapper for the [Jitbit REST API](https://www.jitbit.com/docs/api/)
+  Built-in caching and exponential backoff retry logic.
   `;
 
   const apiDocs = await jsdoc2md.render({ files: 'lib/*.js' });
