@@ -1,6 +1,6 @@
 {
   "name": "jitbit-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript Wrapper for the Jitbit REST API",
   "main": "JitBit.js",
   "scripts": {
